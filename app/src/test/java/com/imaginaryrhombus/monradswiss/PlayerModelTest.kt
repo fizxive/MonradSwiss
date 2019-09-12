@@ -2,6 +2,7 @@ package com.imaginaryrhombus.monradswiss
 
 import com.google.common.truth.Truth
 import org.junit.Test
+import kotlin.math.max
 
 class PlayerModelTest {
 
@@ -9,7 +10,7 @@ class PlayerModelTest {
     fun testCreate() {
         val playerModel = PlayerModel("Alice")
 
-        playerModel.apply {
+        playerModel.run {
             Truth.assertThat(name)
                 .isEqualTo("Alice")
             Truth.assertThat(matches)
@@ -91,7 +92,6 @@ class PlayerModelTest {
     fun testWinRate() {
         val playerModel = PlayerModel("Alice")
 
-
         fun winRateTest(wins: Int, loses: Int, draws: Int) {
             playerModel.wins = wins
             playerModel.loses = loses
@@ -122,15 +122,86 @@ class PlayerModelTest {
 
     @Test
     fun testOpponent() {
-        val playerModel = PlayerModel("Alice")
+        val alice = PlayerModel("Alice")
 
-        playerModel.opponents.add(PlayerModel("Bob").apply {
-            wins = 1; loses = 0; draws = 0
-        })
+        fun createPlayerModel(name: String, wins: Int, loses: Int, draws: Int): PlayerModel {
+            return PlayerModel(name).apply {
+                this.wins = wins; this.loses = loses; this.draws = draws
+            }
+        }
 
-        Truth.assertThat(playerModel.opponentWinRate)
-            .isEqualTo(1.0f)
+        fun testOpponentRecord(vararg opponents: PlayerModel) {
 
-        // TODO : Opponent Test
+            alice.resetRecords()
+
+            alice.opponents.addAll(opponents)
+
+            var totalWins = 0
+            var totalLoses = 0
+            var totalDraws = 0
+            var totalWinRate = 0.0f
+
+            opponents.forEach {
+                totalWins += it.wins
+                totalLoses += it.loses
+                totalDraws += it.draws
+
+                totalWinRate += max(it.winRate, PlayerModel.leastWinRatePerPlayer)
+            }
+
+            alice.run {
+                Truth.assertThat(opponentWinPoints)
+                    .isEqualTo(totalWins * 3 + totalLoses * 0 + totalDraws * 1)
+                Truth.assertThat(opponentWinRate)
+                    .isEqualTo(
+                        if (opponents.isEmpty()) Float.NaN
+                        else totalWinRate / opponents.size
+                    )
+            }
+        }
+
+        val bob = createPlayerModel("Bob", 1, 0, 0)
+
+        testOpponentRecord(bob)
+
+        val charlie = createPlayerModel("Charlie", 0, 1, 0)
+
+        testOpponentRecord(charlie)
+
+        val dave = createPlayerModel("dave", 0, 0, 1)
+
+        testOpponentRecord(dave)
+
+        testOpponentRecord(bob, charlie)
+        testOpponentRecord(bob, dave)
+        testOpponentRecord(charlie, dave)
+
+        val ellen = createPlayerModel("Ellen", 3, 2, 0)
+
+        testOpponentRecord(ellen)
+
+        val frank = createPlayerModel("frank", 0, 6, 3)
+
+        testOpponentRecord(frank)
+
+        val grace = createPlayerModel("Grace", 99, 0, 11)
+
+        testOpponentRecord(grace)
+
+        val heidi = createPlayerModel("Heidi", 200, 550, 97)
+
+        testOpponentRecord(heidi)
+
+        testOpponentRecord(ellen, frank)
+        testOpponentRecord(ellen, grace)
+        testOpponentRecord(ellen, heidi)
+        testOpponentRecord(frank, grace)
+        testOpponentRecord(frank, heidi)
+        testOpponentRecord(grace, heidi)
+        testOpponentRecord(ellen, frank, grace)
+        testOpponentRecord(ellen, frank, heidi)
+        testOpponentRecord(ellen, grace, heidi)
+        testOpponentRecord(frank, grace, heidi)
+        testOpponentRecord(ellen, frank, grace, heidi)
     }
 }
