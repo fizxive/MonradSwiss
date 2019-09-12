@@ -2,6 +2,7 @@ package com.imaginaryrhombus.monradswiss
 
 /**
  * 各プレイヤーの記録するべきデータ.
+ * @param name プレイヤー名.
  */
 data class PlayerModel(val name: String) {
 
