@@ -72,6 +72,16 @@ data class PlayerModel(val name: String) {
     }
 
     /**
+     * プレイヤー名以外をリセットする.
+     */
+    fun resetRecords() {
+        opponents.clear()
+        wins = 0
+        loses = 0
+        draws = 0
+    }
+
+    /**
      * 対戦相手の勝利率平均.
      */
     val opponentWinRate : Float
