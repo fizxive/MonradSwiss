@@ -1,5 +1,7 @@
 package com.imaginaryrhombus.monradswiss
 
+import kotlin.math.max
+
 /**
  * 各プレイヤーの記録するべきデータ.
  * @param name プレイヤー名.
@@ -88,8 +90,9 @@ data class PlayerModel(val name: String) {
     get() {
         return if (opponents.isNotEmpty()) {
             var sumWinRate = 0.0f
+            
             opponents.forEach {
-                sumWinRate += it.winRate
+                sumWinRate += max(it.winRate, leastWinRatePerPlayer)
             }
             sumWinRate / opponents.size
         } else {
@@ -117,5 +120,10 @@ data class PlayerModel(val name: String) {
          * 勝率計算時のマッチ数に乗ずる値.
          */
         private const val WIN_RATE_MATCH_MAGNIFICATION = 3
+
+        /**
+         * オポ計算時のプレイヤーごとの最小勝率.
+         */
+        var leastWinRatePerPlayer = 0.0f
     }
 }
