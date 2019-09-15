@@ -44,7 +44,11 @@ class PlayerModelTest {
             playerModel.draws = draws
 
             Truth.assertThat(playerModel.winPoints)
-                .isEqualTo(wins * 3 + loses * 0 + draws * 1)
+                .isEqualTo(
+                    wins * PlayerModel.WIN_POINT_WIN
+                        + loses * PlayerModel.WIN_POINT_LOSE
+                        + draws * PlayerModel.WIN_POINT_DRAW
+                )
         }
 
         winPointTest(0, 0, 0)
@@ -102,7 +106,11 @@ class PlayerModelTest {
             Truth.assertThat(playerModel.winRate)
                 .isEqualTo(
                     if (matches == 0) Float.NaN
-                    else (wins * 3.0f + loses * 0.0f + draws * 1.0f) / ((matches) * 3)
+                    else (
+                            wins * PlayerModel.WIN_POINT_WIN
+                                + loses * PlayerModel.WIN_POINT_LOSE
+                                + draws * PlayerModel.WIN_POINT_DRAW
+                            ).toFloat() / ((matches) * PlayerModel.WIN_RATE_MATCH_MAGNIFICATION)
                 )
         }
 
@@ -151,7 +159,11 @@ class PlayerModelTest {
 
             alice.run {
                 Truth.assertThat(opponentWinPoints)
-                    .isEqualTo(totalWins * 3 + totalLoses * 0 + totalDraws * 1)
+                    .isEqualTo(
+                        totalWins * PlayerModel.WIN_POINT_WIN
+                                + totalLoses * PlayerModel.WIN_POINT_LOSE
+                                + totalDraws * PlayerModel.WIN_POINT_DRAW
+                    )
                 Truth.assertThat(opponentWinRate)
                     .isEqualTo(
                         if (opponents.isEmpty()) Float.NaN

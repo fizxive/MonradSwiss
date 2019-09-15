@@ -1,5 +1,6 @@
 package com.imaginaryrhombus.monradswiss
 
+import androidx.annotation.VisibleForTesting
 import kotlin.math.max
 
 /**
@@ -119,7 +120,8 @@ data class PlayerModel(val name: String) {
         /**
          * 勝率計算時のマッチ数に乗ずる値.
          */
-        private const val WIN_RATE_MATCH_MAGNIFICATION = 3
+        @VisibleForTesting
+        const val WIN_RATE_MATCH_MAGNIFICATION = 3
 
         /**
          * オポ計算時のプレイヤーごとの最小勝率.
