@@ -45,9 +45,9 @@ class PlayerModelTest {
 
             Truth.assertThat(playerModel.winPoints)
                 .isEqualTo(
-                    wins * PlayerModel.WIN_POINT_WIN
-                        + loses * PlayerModel.WIN_POINT_LOSE
-                        + draws * PlayerModel.WIN_POINT_DRAW
+                wins * PlayerModel.WIN_POINT_WIN
+                    + loses * PlayerModel.WIN_POINT_LOSE
+                    + draws * PlayerModel.WIN_POINT_DRAW
                 )
         }
 
@@ -107,10 +107,10 @@ class PlayerModelTest {
                 .isEqualTo(
                     if (matches == 0) Float.NaN
                     else (
-                            wins * PlayerModel.WIN_POINT_WIN
-                                + loses * PlayerModel.WIN_POINT_LOSE
-                                + draws * PlayerModel.WIN_POINT_DRAW
-                            ).toFloat() / ((matches) * PlayerModel.WIN_RATE_MATCH_MAGNIFICATION)
+                        wins * PlayerModel.WIN_POINT_WIN
+                            + loses * PlayerModel.WIN_POINT_LOSE
+                            + draws * PlayerModel.WIN_POINT_DRAW
+                        ).toFloat() / ((matches) * PlayerModel.WIN_RATE_MATCH_MAGNIFICATION)
                 )
         }
 
@@ -161,8 +161,8 @@ class PlayerModelTest {
                 Truth.assertThat(opponentWinPoints)
                     .isEqualTo(
                         totalWins * PlayerModel.WIN_POINT_WIN
-                                + totalLoses * PlayerModel.WIN_POINT_LOSE
-                                + totalDraws * PlayerModel.WIN_POINT_DRAW
+                            + totalLoses * PlayerModel.WIN_POINT_LOSE
+                            + totalDraws * PlayerModel.WIN_POINT_DRAW
                     )
                 Truth.assertThat(opponentWinRate)
                     .isEqualTo(
